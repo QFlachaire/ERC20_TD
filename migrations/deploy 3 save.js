@@ -4,6 +4,7 @@ const { func } = require('assert-plus');
 
 var TDErc20 = artifacts.require("ERC20TD.sol");
 var evaluator = artifacts.require("Evaluator.sol");
+var ExerciceSolution = artifacts.require("ExerciceSolution.sol");
 
 
 module.exports = (deployer, network, accounts) => {
@@ -14,11 +15,17 @@ module.exports = (deployer, network, accounts) => {
         await deployRecap(deployer, network, accounts); 
 		//await hardcodeContractAddress(deployer, network, accounts)
 		await testDeployment(deployer, network, accounts);
+		await deploySolution(assignedTicker); 
+		await deploy3(deployer, network, accounts);
     });
 };
 
 async function deployTDToken(deployer, network, accounts) {
 	TDToken = await TDErc20.new("TD-ERC20-101","TD-ERC20-101",web3.utils.toBN("20000000000000000000000000000"))
+}
+
+async function deploySolution(assignedTicker, accounts, deployer, network) {
+	solution = await ExerciceSolution.new(assignedTicker,assignedTicker, {from: accounts[i]})
 }
 
 async function deployEvaluator(deployer, network, accounts) {
@@ -55,13 +62,47 @@ async function hardcodeContractAddress(deployer, network, accounts) {
 }
 
 async function testDeployment(depioyer, network, accounts) { 
-	getBalance = await TDToken.balanceOf(accounts[1]);
+	i = 1;
+
+	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Init Balance " + getBalance.toString());
 
-	//Ex1
-	await Evaluator.ex1_getTickerAndSupply({from: accounts[1]});
-	getBalance = await TDToken.balanceOf(accounts[1]);
+	// Ex1
+	await Evaluator.ex1_getTickerAndSupply({from: accounts[i]});
+	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex1 Balance " + getBalance.toString());
+
+	// Ex2
+	assignedTicker = await Evaluator.assignedTicker(accounts[i]);
+	console.log(assignedTicker)
+	assignedSupply = new web3.utils.BN(await Evaluator.assignedSupply(accounts[i]));
+	console.log(assignedSupply.toString())
+	
+	myERC20 = await TDErc20.new(assignedTicker, assignedTicker, assignedSupply.toString(), {from: accounts[i]})
+	
+	await Evaluator.submitExercice(myERC20.address, {from: accounts[i]})
+	await Evaluator.ex2_testErc20TickerAndSupply({from: accounts[i]});
+
+	getBalance = await TDToken.balanceOf(accounts[i]);
+	console.log("Ex2 Balance " + getBalance.toString());
+
+
+
 
 }
 //2.4.40
+async function deploy3(depioyer, network, accounts) { 
+
+	// Ex3
+
+	// await Evaluator.submitExercice(myERC20.address, {from: accounts[i]})
+
+	// Deploy
+	solution = await ExerciceSolution.new(assignedTicker, assignedTicker, {from: accounts[i]})
+	
+	await Evaluator.submitExercice(solution.address, {from: accounts[i]})
+	await Evaluator.ex3_testGetToken({from: accounts[i]});
+	
+	getBalance = await TDToken.balanceOf(accounts[i]);
+	console.log("Ex3 Balance " + getBalance.toString());
+}
