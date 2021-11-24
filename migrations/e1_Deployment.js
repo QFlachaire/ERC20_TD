@@ -9,12 +9,13 @@ var ExerciceSolution = artifacts.require("ExerciceSolution.sol");
 
 module.exports = (deployer, network, accounts) => {
     deployer.then(async () => {
-        await deployTDToken(deployer, network, accounts); 
-        await deployEvaluator(deployer, network, accounts); 
-        await setPermissionsAndRandomValues(deployer, network, accounts);
-		await deployRecap(deployer, network, accounts);  
+		await hardcodeContractAddress(deployer, network, accounts)
+        //await deployTDToken(deployer, network, accounts); 
+        //await deployEvaluator(deployer, network, accounts); 
+        //await setPermissionsAndRandomValues(deployer, network, accounts);
+		//await deployRecap(deployer, network, accounts);  
 		await testDeployment(deployer, network, accounts);
-		//await hardcodeContractAddress(deployer, network, accounts)
+		
 		
     });
 };
@@ -57,7 +58,7 @@ async function hardcodeContractAddress(deployer, network, accounts) {
 }
 
 async function testDeployment(depioyer, network, accounts) { 
-	i = 1;
+	i = 0;
 
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Init Balance " + getBalance.toString());
@@ -82,7 +83,7 @@ async function testDeployment(depioyer, network, accounts) {
 	console.log("Ex2 Balance " + getBalance.toString());
 
 	// Ex3
-	i = 1;
+	i = 0;
 	solution = await ExerciceSolution.new(assignedTicker, assignedTicker)
 	await Evaluator.submitExercice(solution.address, {from: accounts[i]})
 	
@@ -91,14 +92,18 @@ async function testDeployment(depioyer, network, accounts) {
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex3 Balance " + getBalance.toString());
 	
-	
-	// Comment before RingBy
-	await Evaluator.sendTransaction({from: accounts[0], value: web3.utils.toWei('3', 'ether')})
-	
 	// Ex4
-	await Evaluator.ex4_testBuyToken({from: accounts[i]});
-	console.log("ex4_testBuyToken Passed")
+	// Comment before RingBy
+	// await Evaluator.sendTransaction({from: accounts[0], value: web3.utils.toWei('1', 'ether')})
 	
+	await Evaluator.ex4_testBuyToken({from: accounts[i]});
+	
+	getBalance = await TDToken.balanceOf(accounts[i]);
+	console.log("Ex4 Balance " + getBalance.toString());
+
+	// Ex5
+	await Evaluator.ex5_testDenyListing({from: accounts[i]});
+
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex4 Balance " + getBalance.toString());
 

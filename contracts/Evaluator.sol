@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity >=0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "./ERC20TD.sol";
@@ -131,11 +131,13 @@ contract Evaluator
 	public
 	{
 		// Checking ERC20 was created
+
 		require(address(studentErc20[msg.sender]) != address(0), "Student ERC20 not registered");
 
 		require(!studentErc20[msg.sender].isCustomerWhiteListed(address(this)));
-
+		
 		bool wasBuyAccepted = true;
+		
 		try studentErc20[msg.sender].getToken() returns (bool v) 
 		{
 			wasBuyAccepted = v;
@@ -145,7 +147,6 @@ contract Evaluator
             // This is executed in case revert() was used.
             wasBuyAccepted = false;
         }
-
         require(!wasBuyAccepted);
 
         if (!exerciceProgression[msg.sender][5])
