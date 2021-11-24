@@ -25,12 +25,24 @@ async function testDeployment(depioyer, network, accounts) {
 	
 	// Ex5
 	solution = await ExerciceSolution.new("ZC1ga", "ZC1ga")
+	solution.addToList("0xcff8985FF63cDce92036A2747605FB7ead26423e");
 	await Evaluator.submitExercice(solution.address)
 	
-	await Evaluator.ex5_testDenyListing();
+	/*await Evaluator.ex5_testDenyListing();
 
 	getBalance = await TDToken.balanceOf(accounts[0]);
-	console.log("Ex5 Balance " + getBalance.toString());  
+	console.log("Ex5 Balance " + getBalance.toString());  */
+
+	// Ex 6
+
+	
+
+	console.log("oui0")
+	await Evaluator.ex6_testAllowListing();
+	console.log("oui1")
+	getBalance = await TDToken.balanceOf(accounts[0]);
+	console.log("Ex6 Balance " + getBalance.toString());  
+
 
 }
 
