@@ -1,4 +1,5 @@
-# ERC20 101
+# ERC20 101 - M1 ESILV FinTech
+TD from the BlockChain Programming Course I followed in 2021 during my Master at ESILV in Fintech.
 
 ## Introduction
 Welcome! This is an automated workshop that will explain how to deploy and ERC20 token, and customize it to perform specific functions.
