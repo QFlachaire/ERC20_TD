@@ -20,22 +20,26 @@ contract ExerciceSolution is ERC20 {
 
     function buyToken() external payable returns (bool) 
 	{ 
-		_mint(msg.sender, msg.value/1e12);
-        return true;
+        if (ListAllowed[msg.sender] != 0) {
+            _mint(msg.sender, ListAllowed[msg.sender]*msg.value/1e12);
+            return true;
+        }
+        return false;
     }
 
-    function addToList(address _address) public {
-        ListAllowed[_address] = 1;
+    function addToList(address _address, uint8 _level) public {
+        require(_level == 1 || _level == 2 || _level == 3 || _level == 0);
+        ListAllowed[_address] = _level;
     }
 
-    function isCustomerWhiteListed(address customerAddress) external returns (bool)
+    function isCustomerWhiteListed(address _customerAddress) external returns (bool)
     {
-        return ListAllowed[customerAddress] != 0;
+        return ListAllowed[_customerAddress] != 0;
     }
 
-    function customerTierLevel(address customerAddress) external returns (uint256)
+    function customerTierLevel(address _customerAddress) external returns (uint256)
     {
-        return 2;
+        return ListAllowed[_customerAddress];
     }
 }
 
