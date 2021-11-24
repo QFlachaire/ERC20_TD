@@ -8,7 +8,7 @@ interface IExerciceSolution is IERC20
     
   function getToken() external returns (bool);
 
-  function getTokens(uint256 nbTokens) external returns (bool);
+  function getTokens() external returns (bool);
 
   function buyToken() external payable returns (bool);
 

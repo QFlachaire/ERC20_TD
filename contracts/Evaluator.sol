@@ -1,9 +1,8 @@
-pragma solidity >=0.6.2;
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "./ERC20TD.sol";
 import "./IExerciceSolution.sol";
-
 
 contract Evaluator 
 {
@@ -87,11 +86,10 @@ contract Evaluator
 		}
 
 	}
-		
+
 	function ex3_testGetToken()
 	public
 	{
-		
 		// Checking ERC20 was created
 		require(address(studentErc20[msg.sender]) != address(0), "Student ERC20 not registered");
 
@@ -99,7 +97,6 @@ contract Evaluator
 		uint256 initialBalance = studentErc20[msg.sender].balanceOf(address(this));
 
 		// Call getToken
-		//require(false, "ll");
 		studentErc20[msg.sender].getToken();
 
 		// Retrieving final balance
@@ -280,7 +277,6 @@ contract Evaluator
 	function submitExercice(IExerciceSolution studentExercice)
 	public
 	{
-		require(true, "ll");
 		// Checking this contract was not used by another group before
 		require(!hasBeenPaired[address(studentExercice)]);
 
@@ -331,14 +327,14 @@ contract Evaluator
 		require(address(studentErc20[msg.sender]) != address(0), "Student ERC20 not registered");
 
 		// Retrieving initial balance
-		
 		uint256 initialBalance = studentErc20[msg.sender].balanceOf(address(this));
 
 		// Call buyToken
 		studentErc20[msg.sender].buyToken.value(0.0001 ether)();
-		require(false, "o");
+
 		// Retrieving intermediate balance
 		uint256 intermediateBalance = studentErc20[msg.sender].balanceOf(address(this));
+
 		require(initialBalance < intermediateBalance, "Token balance did not increase");
 
 		firstBuyAmount = intermediateBalance - initialBalance;

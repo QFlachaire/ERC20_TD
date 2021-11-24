@@ -83,23 +83,25 @@ async function testDeployment(depioyer, network, accounts) {
 
 	// Ex3
 	i = 1;
-	// await Evaluator.submitExercice(myERC20.address, {from: accounts[i]})
-
 	solution = await ExerciceSolution.new(assignedTicker, assignedTicker)
-	
 	await Evaluator.submitExercice(solution.address, {from: accounts[i]})
+	
 	await Evaluator.ex3_testGetToken({from: accounts[i]});
 	
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex3 Balance " + getBalance.toString());
-
-	// Ex4
-	solution = await ExerciceSolution.new(assignedTicker, assignedTicker)
-	await Evaluator.submitExercice(solution.address, {from: accounts[i]})
 	
+	// Ex4
+	//solution = await ExerciceSolution.new(assignedTicker, assignedTicker)
+	//await Evaluator.submitExercice(solution.address, {from: accounts[i]})
 	console.log("Submit Passed")
+
+
+	// await accounts[0].transfer(Evaluator.address, web3.utils.toWei('3', 'ether'));
+	await Evaluator.sendTransaction({from: accounts[0], value: web3.utils.toWei('3', 'ether')})
 	await Evaluator.ex4_testBuyToken({from: accounts[i]});
 	console.log("ex4_testBuyToken Passed")
+	
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex4 Balance " + getBalance.toString());
 
