@@ -91,14 +91,11 @@ async function testDeployment(depioyer, network, accounts) {
 	getBalance = await TDToken.balanceOf(accounts[i]);
 	console.log("Ex3 Balance " + getBalance.toString());
 	
-	// Ex4
-	//solution = await ExerciceSolution.new(assignedTicker, assignedTicker)
-	//await Evaluator.submitExercice(solution.address, {from: accounts[i]})
-	console.log("Submit Passed")
-
-
-	// await accounts[0].transfer(Evaluator.address, web3.utils.toWei('3', 'ether'));
+	
+	// Comment before RingBy
 	await Evaluator.sendTransaction({from: accounts[0], value: web3.utils.toWei('3', 'ether')})
+	
+	// Ex4
 	await Evaluator.ex4_testBuyToken({from: accounts[i]});
 	console.log("ex4_testBuyToken Passed")
 	
